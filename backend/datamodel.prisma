@@ -1,0 +1,50 @@
+type User {
+  id: ID! @id
+  name: String!
+  email: String! @unique
+  password: String!
+  image: String
+  hostOf: [Party!]! @relation(name: "MyRelation")
+  guestOf: [Party!]! @relation(name: "MyPartyRelation")
+}
+
+type Party {
+  id: ID! @id
+  title: String!
+  host: User! @relation(name: "MyRelation")
+  guests: [User!]! @relation(name: "MyPartyRelation")
+  date: DateTime!
+  location: String!
+  image: String!
+  description: String!
+  needs: [Need!]!
+}
+
+type Item {
+  id: ID! @id
+  name: String!
+}
+
+type Need {
+  id: ID! @id
+  item: Item!
+  quantity: Int!
+  quantityUnit: String
+  party: Party!
+  providers: [Provider!]!
+  category: [String!]! @scalarList(strategy: RELATION)
+  notes: String
+  priority: Priority
+}
+
+type Provider {
+  id: ID! @id
+  quantity: Int!
+  user: User!
+}
+
+enum Priority {
+  Low
+  Medium
+  High
+}
